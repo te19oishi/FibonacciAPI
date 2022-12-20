@@ -5,8 +5,6 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # フィボナッチ数を返す関数
-
-
 def fibonacci(n):
     if n == 0:
         return 0
