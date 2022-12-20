@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: Fibonacci API
+  description: Returns the nth Fibonacci number specified
+  version: "1.0.0"
+servers:
+  - url: "http://te19oishi.pythonanywhere.com"
+    description: Production
+paths:
+  /fib:
+    get:
+      summary: Return fibonacci number
+      description: |
+        The required query parameter **n** returns 
+        the nth Fibonacci number.
+      tags:
+        - functions
+      parameters:
+        - $ref: "#/components/parameters/Query-n"
+      responses:
+        "200":
+          description: Sucsess
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Result"
+        "400":
+          $ref: "#/components/responses/400-BadRequest"
+components:
+  schemas:
+    Result:
+      type: object
+      properties:
+        result:
+          type: integer
+          format: int64
+          minimum: 0
+          exclusiveMinimum: false
+      additionalProperties: false
+      required:
+        - result
+    ClientError:
+      type: object
+      properties:
+        status: { type: integer }
+        message: { type: string }
+      additionalProperties: false
+      required:
+        - status
+        - message
+  parameters:
+    Query-n:
+      name: n
+      in: query
+      description: The nth Fibonacci number
+      required: true
+      schema: { type: integer, format: int32 }
+      example: 10
+  responses:
+    400-BadRequest:
+      description: Client side error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ClientError"
